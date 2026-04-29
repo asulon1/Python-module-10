@@ -6,7 +6,7 @@
 #  By: asulon <asulon@student.42nice.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 01:10:08 by asulon          #+#    #+#               #
-#  Updated: 2026/04/29 02:02:37 by asulon          ###   ########.fr        #
+#  Updated: 2026/04/29 02:05:46 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -34,7 +34,8 @@ def conditional_caster(condition: Callable[[int], bool],
     )
 
 
-def spell_sequence(spells: list[Callable]) -> Callable:
+def spell_sequence(spells: list[Callable[[str, int], str]]
+                   ) -> Callable[[str, int], list[str]]:
 
     return lambda target, power: list(
         map(lambda spell: spell(target, power), spells)
