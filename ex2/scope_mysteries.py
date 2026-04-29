@@ -6,11 +6,11 @@
 #  By: asulon <asulon@student.42nice.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 02:07:54 by asulon          #+#    #+#               #
-#  Updated: 2026/04/29 02:46:47 by asulon          ###   ########.fr        #
+#  Updated: 2026/04/29 02:47:31 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
-from typing import Callable, Any, Optional
+from typing import Callable, Any
 
 
 def mage_counter() -> Callable[..., int]:
