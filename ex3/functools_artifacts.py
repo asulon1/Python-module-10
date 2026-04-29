@@ -3,15 +3,15 @@
 #                                                      :::      ::::::::    #
 #  functools_artifacts.py                            :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
+#  By: asulon <asulon@student.42nice.fr>         +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 16:01:46 by asulon          #+#    #+#               #
-#  Updated: 2026/04/29 16:25:12 by asulon          ###   ########.fr        #
+#  Updated: 2026/04/30 01:54:58 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
 from typing import Any, Callable
-from functools import reduce
+from functools import reduce, partial, lru_cache, singledispatch
 from operator import add, mul
 
 
@@ -32,34 +32,42 @@ def spell_reducer(spells: list[int], operation: str) -> int:
             raise ValueError("Error: Unknown operator")
 
 
-def partial_enchanter(base_enchantment: Callable[[int, str, str], str]
+def partial_enchanter(base_enchantment: Callable
                       ) -> dict[str, Callable]:
-    """
-• Take a base enchantment function with signature (power: int, element: str, target:
-str) -> str
-• Use functools.partial to create 3 specialized versions
-• Each version pre-filling power=50 and the element
-"""
+    return {
+        "fire": partial(base_enchantment, 5, "fire"),
+        "water": partial(base_enchantment, 15, "water"),
+        "light": partial(base_enchantment, 50, "light"),
+    }
 
 
+@lru_cache(maxsize=None)
 def memoized_fibonacci(n: int) -> int:
-    """
-• Use functools.lru_cache decorator for memoization
-• Implement fibonacci sequence calculation
-• Function should return the nth Fibonacci number
-• The cache should improve performance for repeated calls
-• Return the nth fibonacci number
-"""
+    if n < 0:
+        raise ValueError("number must be >= 0")
+    if n in (0, 1):
+        return n
+    return memoized_fibonacci(n - 1) + memoized_fibonacci(n - 2)
 
 
 def spell_dispatcher() -> Callable[[Any], str]:
-    """
-• Use decorator functools.singledispatch to create a spell system
-• The base function receives Any and handles unknown spell type
-• Handle different types: int (damage spell), str (enchantment), list (multi-cast)
-• Return the dispatcher function
-• Each type should have appropriate spell behavior
-"""
+    @singledispatch
+    def dispatcher(args: Any) -> str:
+        return "Unknown spell type"
+
+    @dispatcher.register
+    def _(power: int) -> str:
+        return f"Damage spell: {power} damage"
+
+    @dispatcher.register
+    def _(spell: str) -> str:
+        return f"Enchantment: {spell}"
+
+    @dispatcher.register
+    def _(spells: list) -> str:
+        return f"Multi-cast: {len(spells)} spells"
+
+    return dispatcher
 
 
 def main() -> None:
@@ -71,6 +79,35 @@ def main() -> None:
             print(spell_reducer(int_tab, operator))
         except ValueError as error:
             print(error)
+
+    print("\n=== Partial enchenter ===")
+
+    def base_enchantment(power: int, element: str, target: str) -> str:
+        return (f"{element.capitalize()} enchantment "
+                f"deals {power} DMG to {target.capitalize()}")
+
+    base = partial_enchanter(base_enchantment)
+    print(base["fire"]('dragon'))
+    print(base["water"]('fire elemental'))
+    print(base["light"]('demon'))
+
+    print("\n=== Memoized fibonacci ===")
+    print("Fib(0):", memoized_fibonacci(0))
+    print("Fib(1):", memoized_fibonacci(1))
+    print("Fib(10):", memoized_fibonacci(10))
+    print("Fib(15):", memoized_fibonacci(15))
+    try:
+        memoized_fibonacci(-1)
+    except Exception as e:
+        print(f"Fib(-1): {e}")
+    print("Lru.cache Info:", memoized_fibonacci.cache_info())
+
+    print("\n=== Spell dispatcher ===")
+    dispatcher = spell_dispatcher()
+    print(dispatcher(42))
+    print(dispatcher("arcane blast"))
+    print(dispatcher(["te", 1, "fr"]))
+    print(dispatcher(42.42))
 
 
 if __name__ == "__main__":
