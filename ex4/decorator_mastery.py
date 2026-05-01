@@ -6,7 +6,7 @@
 #  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 01:56:36 by asulon          #+#    #+#               #
-#  Updated: 2026/05/01 11:54:36 by asulon          ###   ########.fr        #
+#  Updated: 2026/05/01 12:00:54 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -28,9 +28,9 @@ def spell_timer(func: Callable[..., str]) -> Callable[..., str]:
 
 
 def power_validator(min_power: int) -> Callable[[Any], Any]:
-    def validator(func) -> Any:
+    def validator(func: Callable[..., str]) -> Any:
         @wraps(func)
-        def wrapper(*args: str, **kwargs: int):
+        def wrapper(*args: str, **kwargs: int) -> Callable[[Any], Any]:
             power: int
             if isinstance(args[2], int):
                 power = args[2]
@@ -44,10 +44,10 @@ def power_validator(min_power: int) -> Callable[[Any], Any]:
     return validator
 
 
-def retry_spell(max_attempts: int) -> Callable:
-    def retry(func) -> Callable[..., str]:
+def retry_spell(max_attempts: int) -> Callable[[Any], Any]:
+    def retry(func: Callable[..., str]) -> Callable[..., str]:
         @wraps(func)
-        def wrapper(*args: str, **kwargs: int) -> str:
+        def wrapper(*args: str, **kwargs: int) -> Any:
             attemp = 1
             while attemp < max_attempts:
                 try:
@@ -79,7 +79,7 @@ def main() -> None:
         return "Fireball cast!"
 
     @retry_spell(5)
-    def lightning(failure: bool):
+    def lightning(failure: bool) -> str:
         if failure:
             raise Exception("Spell failed")
         else:
