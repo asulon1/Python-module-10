@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  functools_artifacts.py                            :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: asulon <asulon@student.42nice.fr>         +#+  +:+       +#+         #
+#  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 16:01:46 by asulon          #+#    #+#               #
-#  Updated: 2026/04/30 01:54:58 by asulon          ###   ########.fr        #
+#  Updated: 2026/05/01 11:48:04 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -32,8 +32,8 @@ def spell_reducer(spells: list[int], operation: str) -> int:
             raise ValueError("Error: Unknown operator")
 
 
-def partial_enchanter(base_enchantment: Callable
-                      ) -> dict[str, Callable]:
+def partial_enchanter(base_enchantment: Callable[[int, str, str], str]
+                      ) -> dict[str, Callable[[Any], Any]]:
     return {
         "fire": partial(base_enchantment, 5, "fire"),
         "water": partial(base_enchantment, 15, "water"),
@@ -64,7 +64,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
         return f"Enchantment: {spell}"
 
     @dispatcher.register
-    def _(spells: list) -> str:
+    def _(spells: list[Any]) -> str:
         return f"Multi-cast: {len(spells)} spells"
 
     return dispatcher

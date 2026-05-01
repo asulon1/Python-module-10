@@ -3,10 +3,10 @@
 #                                                      :::      ::::::::    #
 #  scope_mysteries.py                                :+:      :+:    :+:    #
 #                                                  +:+ +:+         +:+      #
-#  By: asulon <asulon@student.42nice.fr>         +#+  +:+       +#+         #
+#  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 02:07:54 by asulon          #+#    #+#               #
-#  Updated: 2026/04/29 02:47:31 by asulon          ###   ########.fr        #
+#  Updated: 2026/05/01 11:42:30 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -81,8 +81,8 @@ def main() -> None:
     print("\n=== Enchantment Factory ===")
     ice_factory = enchantment_factory("Ice")
     shadow_factory = enchantment_factory("shadow")
-    print(f"Enchant sword with Ice: {ice_factory("sword")}")
-    print(f"Enchant wand with shadow: {shadow_factory("wand")}")
+    print(f"Enchant sword with Ice: {ice_factory('sword')}")
+    print(f"Enchant wand with shadow: {shadow_factory('wand')}")
 
     print("\n=== Memory Vault ===")
     vault = memory_vault()
@@ -92,10 +92,10 @@ def main() -> None:
     vault["store"]("rock", 1)
 
     print("Recall stored data :")
-    print(f" - Recall book: {vault["recall"]("book")}")
-    print(f" - Recall wand: {vault["recall"]("wand")}")
-    print(f" - Recall rock: {vault["recall"]("rock")}")
-    print(f" - unknown key: {vault["recall"]("unknown")}")
+    print(f" - Recall book: {vault['recall']('book')}")
+    print(f" - Recall wand: {vault['recall']('wand')}")
+    print(f" - Recall rock: {vault['recall']('rock')}")
+    print(f" - unknown key: {vault['recall']('unknown')}")
 
 
 if __name__ == "__main__":
