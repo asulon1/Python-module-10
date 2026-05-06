@@ -6,7 +6,7 @@
 #  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/29 16:01:46 by asulon          #+#    #+#               #
-#  Updated: 2026/05/01 11:48:04 by asulon          ###   ########.fr        #
+#  Updated: 2026/05/06 16:44:21 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -52,7 +52,7 @@ def memoized_fibonacci(n: int) -> int:
 
 def spell_dispatcher() -> Callable[[Any], str]:
     @singledispatch
-    def dispatcher(args: Any) -> str:
+    def dispatcher(_: Any) -> str:
         return "Unknown spell type"
 
     @dispatcher.register
@@ -63,7 +63,7 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def _(spell: str) -> str:
         return f"Enchantment: {spell}"
 
-    @dispatcher.register
+    @dispatcher.register(list)
     def _(spells: list[Any]) -> str:
         return f"Multi-cast: {len(spells)} spells"
 

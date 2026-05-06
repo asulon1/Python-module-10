@@ -6,7 +6,7 @@
 #  By: asulon <asulon@student.42.fr>             +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/04/30 01:56:36 by asulon          #+#    #+#               #
-#  Updated: 2026/05/01 12:00:54 by asulon          ###   ########.fr        #
+#  Updated: 2026/05/06 16:39:08 by asulon          ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -28,9 +28,9 @@ def spell_timer(func: Callable[..., str]) -> Callable[..., str]:
 
 
 def power_validator(min_power: int) -> Callable[[Any], Any]:
-    def validator(func: Callable[..., str]) -> Any:
+    def validator(func: Callable[..., str]) -> Callable[..., str]:
         @wraps(func)
-        def wrapper(*args: str, **kwargs: int) -> Callable[[Any], Any]:
+        def wrapper(*args: str, **kwargs: int) -> str:
             power: int
             if isinstance(args[2], int):
                 power = args[2]
